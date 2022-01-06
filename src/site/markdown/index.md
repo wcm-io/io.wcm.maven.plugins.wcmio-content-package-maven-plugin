@@ -60,7 +60,7 @@ If you want to download arbitrary content packages you can skip upload the conte
 
 ### GitHub Repository
 
-Sources: https://github.com/wcm-io/wcmio-content-package-maven-plugin
+Sources: https://github.com/wcm-io/io.wcm.maven.plugins.wcmio-content-package-maven-plugin
 
 
 [usage]: usage.html
