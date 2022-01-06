@@ -58,6 +58,10 @@ Additional the `download` goal supports compared to the Adobe plugin:
 If you want to download arbitrary content packages you can skip upload the content package definition and rebuilding the content package. See [plugin documentation][plugindocs] for details.
 
 
+### GitHub Repository
+
+Sources: https://github.com/wcm-io/wcmio-content-package-maven-plugin
+
 
 [usage]: usage.html
 [plugindocs]: plugin-info.html
