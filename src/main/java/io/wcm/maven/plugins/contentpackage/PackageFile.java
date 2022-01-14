@@ -29,6 +29,7 @@ public final class PackageFile {
   /**
    * Content package file.
    */
+  @SuppressWarnings("java:S1700")
   private File packageFile;
 
   /**

@@ -215,11 +215,9 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
     if (this.unpackDeleteDirectories != null) {
       for (String directory : unpackDeleteDirectories) {
         File directoryFile = FileUtils.getFile(this.unpackDirectory, directory);
-        if (directoryFile.exists()) {
-          if (!deleteDirectoryWithRetries(directoryFile, 0)) {
+        if (directoryFile.exists() && !deleteDirectoryWithRetries(directoryFile, 0)) {
             throw new MojoExecutionException("Unable to delete existing content from "
                 + directoryFile.getAbsolutePath());
-          }
         }
       }
     }
@@ -232,8 +230,9 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
 
   /**
    * Delete fails sometimes or may be blocked by an editor - give it some time to try again (max. 1 sec).
+   * @throws MojoExecutionException Mojo execution exception
    */
-  private boolean deleteDirectoryWithRetries(File directory, int retryCount) {
+  private boolean deleteDirectoryWithRetries(File directory, int retryCount) throws MojoExecutionException {
     if (retryCount > 100) {
       return false;
     }
@@ -245,7 +244,7 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
         Thread.sleep(10);
       }
       catch (InterruptedException ex) {
-        // ignore
+        throw new MojoExecutionException(ex.getMessage(), ex);
       }
       return deleteDirectoryWithRetries(directory, retryCount + 1);
     }
