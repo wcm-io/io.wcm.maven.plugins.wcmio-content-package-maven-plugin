@@ -55,8 +55,8 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
    * </p>
    * <p>
    * See <a href=
-   * "http://dev.day.com/docs/en/crx/current/how_to/package_manager.html#Managing%20Packages%20on%20the%20Command%20Line"
-   * >CRX HTTP service Interface</a> for details on this interface.
+   * "https://experienceleague.adobe.com/docs/experience-manager-65/administering/operations/curl.html?lang=en#package-management"
+   * >Package Manager HTTP API</a> for details on this interface.
    * </p>
    */
   @Parameter(property = "vault.serviceURL", required = true, defaultValue = "http://localhost:4502/crx/packmgr/service")
