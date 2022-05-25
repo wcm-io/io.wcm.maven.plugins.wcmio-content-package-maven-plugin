@@ -25,7 +25,7 @@
 
     <release version="2.1.0" date="not released">
       <action type="add" dev="sseifert">
-        Also check package manager installstatus.jsp after installation of content packages with embedded packages.
+        Check package manager installstatus.jsp before and after installation of content package to make sure packager manager is also completed with installing embedded packages.
       </action>
     </release>
 
