@@ -36,6 +36,7 @@ import com.google.common.collect.ImmutableList;
 
 import io.wcm.tooling.commons.packmgr.PackageManagerProperties;
 import io.wcm.tooling.commons.packmgr.install.VendorInstallerFactory;
+import io.wcm.tooling.commons.packmgr.install.VendorInstallerFactory.Service;
 
 /**
  * Common functionality for all mojos.
@@ -127,14 +128,14 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
    * before it is tried to upload and install a new package and after each upload.
    * </p>
    * <p>
-   * If not all packages are installed the upload is delayed up to 10 minutes, every 5 seconds the
-   * activation status is checked anew.
+   * If not all bundles are activated the upload is delayed up to {@link #bundleStatusWaitLimit} seconds,
+   * every 5 seconds the activation status is checked anew.
    * </p>
    * <p>
    * Expected is an URL like: http://localhost:4502/system/console/bundles/.json
    * </p>
    * <p>
-   * If the URL is not set it is derived from serviceURL. Set to "-" to explicitly disable the status check.
+   * If the URL is not set it is derived from serviceURL. If set to "-" the status check is disabled.
    * </p>
    */
   @Parameter(property = "vault.bundleStatusURL", required = false)
@@ -146,6 +147,33 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
    */
   @Parameter(property = "vault.bundleStatusWaitLimit", defaultValue = "360")
   private int bundleStatusWaitLimit;
+
+  /**
+   * <p>
+   * Package Manager install status JSON URL. If an URL is configured the installation status of packages and
+   * embedded packages is checked before it is tried to upload and install a new package and after each upload.
+   * </p>
+   * <p>
+   * If not all packages are installed the upload is delayed up to {@link #packageManagerInstallStatusWaitLimit}
+   * seconds, every 5 seconds the installation status is checked anew.
+   * </p>
+   * <p>
+   * Expected is an URL like: http://localhost:4502/crx/packmgr/installstatus.jsp
+   * </p>
+   * <p>
+   * If the URL is not set it is derived from serviceURL. If set to "-" the status check is disabled.
+   * </p>
+   */
+  @Parameter(property = "vault.packageManagerInstallStatusURL", required = false)
+  private String packageManagerInstallStatusURL;
+
+  /**
+   * Number of seconds to wait as maximum for a positive package manager install status check.
+   * If this limit is reached and the package manager status is still not positive the install of the package proceeds
+   * anyway.
+   */
+  @Parameter(property = "vault.packageManagerInstallStatusWaitLimit", defaultValue = "360")
+  private int packageManagerInstallStatusWaitLimit;
 
   /**
    * Patterns for symbolic names of bundles that are expected to be not present in bundle list.
@@ -222,6 +250,8 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
     props.setBundleStatusWaitLimitSec(this.bundleStatusWaitLimit);
     props.setBundleStatusBlacklistBundleNames(ImmutableList.copyOf(this.bundleStatusBlacklistBundleNames));
     props.setBundleStatusWhitelistBundleNames(ImmutableList.copyOf(this.bundleStatusWhitelistBundleNames));
+    props.setPackageManagerInstallStatusURL(buildPackageManagerInstallStatusUrl());
+    props.setPackageManagerInstallStatusWaitLimitSec(this.packageManagerInstallStatusWaitLimit);
     props.setRelaxedSSLCheck(this.relaxedSSLCheck);
     props.setHttpConnectTimeoutSec(this.httpConnectTimeoutSec);
     props.setHttpSocketTimeoutSec(this.httpSocketTimeout);
@@ -241,7 +271,7 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
         serviceUrl = VendorInstallerFactory.getBaseUrl(serviceUrl) + COMPOSUM_URL;
         break;
       default:
-        throw new MojoExecutionException("Unsupporte service URL: " + serviceUrl);
+        throw new MojoExecutionException("Unsupported service URL: " + serviceUrl);
     }
     return serviceUrl;
   }
@@ -256,6 +286,19 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
     // if not set use hostname from serviceURL and add default path to bundle status
     String baseUrl = VendorInstallerFactory.getBaseUrl(buildPackageManagerUrl());
     return baseUrl + "/system/console/bundles/.json";
+  }
+
+  private String buildPackageManagerInstallStatusUrl() throws MojoExecutionException {
+    if (StringUtils.equals(this.packageManagerInstallStatusURL, "-")
+        || VendorInstallerFactory.identify(this.serviceURL) != Service.CRX) {
+      return null;
+    }
+    if (this.packageManagerInstallStatusURL != null) {
+      return this.packageManagerInstallStatusURL;
+    }
+    // if not set use hostname from serviceURL and add default path to bundle status
+    String baseUrl = VendorInstallerFactory.getBaseUrl(buildPackageManagerUrl());
+    return baseUrl + "/crx/packmgr/installstatus.jsp";
   }
 
 }
