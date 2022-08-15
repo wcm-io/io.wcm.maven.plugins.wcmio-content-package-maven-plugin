@@ -3,7 +3,7 @@ About Content Package Maven Plugin
 
 Upload and download content packages.
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm.maven.plugins/wcmio-content-package-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm.maven.plugins/wcmio-content-package-maven-plugin)
+[![Maven Central](https://img.shields.io/maven-central/v/io.wcm.maven.plugins/wcmio-content-package-maven-plugin)](https://repo1.maven.org/maven2/io/wcm/maven/plugins/wcmio-content-package-maven-plugin)
 
 
 ### Documentation

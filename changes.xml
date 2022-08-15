@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.1.4" date="2022-08-15">
+      <action type="update" dev="sseifert">
+        Check bundle status before package manager install status as the latter may report errors if certain bundles are restarted.
+      </action>
+    </release>
+
     <release version="2.1.2" date="2022-06-20">
       <action type="fix" dev="sseifert">
         Add explicit handling for responses with invalid JSON payload for packager manager install status and bundle status calls.
