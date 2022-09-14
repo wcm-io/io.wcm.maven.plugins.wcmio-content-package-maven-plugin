@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
@@ -32,7 +31,9 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.repository.RepositorySystem;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
 
 import io.wcm.tooling.commons.packmgr.install.PackageInstaller;
 
@@ -164,13 +165,11 @@ public final class InstallMojo extends AbstractContentPackageMojo {
   private PackageFile[] packageFiles;
 
   @Component
-  private RepositorySystem repository;
-
-  @Parameter(property = "localRepository", required = true, readonly = true)
-  private ArtifactRepository localRepository;
-
-  @Parameter(property = "project.remoteArtifactRepositories", required = true, readonly = true)
-  private List<ArtifactRepository> remoteRepositories;
+  private RepositorySystem repoSystem;
+  @Parameter(defaultValue = "${repositorySystemSession}", readonly = true, required = true)
+  private RepositorySystemSession repoSession;
+  @Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true, required = true)
+  private List<RemoteRepository> repositories;
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
@@ -180,7 +179,7 @@ public final class InstallMojo extends AbstractContentPackageMojo {
 
     // collect files to install
     List<io.wcm.tooling.commons.packmgr.install.PackageFile> items = new ArrayList<>();
-    ArtifactHelper helper = new ArtifactHelper(repository, localRepository, remoteRepositories);
+    ArtifactHelper helper = new ArtifactHelper(repoSystem, repoSession, repositories);
     if (packageFiles != null && packageFiles.length > 0) {
       for (PackageFile ref : packageFiles) {
         io.wcm.tooling.commons.packmgr.install.PackageFile item = toPackageFile(ref, helper);

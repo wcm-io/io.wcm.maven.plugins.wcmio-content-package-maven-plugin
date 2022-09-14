@@ -27,6 +27,12 @@
       <action type="update" dev="sseifert">
         Content Unpacker: Allow to set replication activation information for "dam:Asset" nodes.
       </action>
+      <action type="update" dev="sseifert">
+        Switch to Eclipse Aether API.
+      </action>
+      <action type="update" dev="sseifert">
+        Switch minimum Maven version to 3.3.9.
+      </action>
     </release>
 
     <release version="2.1.4" date="2022-08-15">
