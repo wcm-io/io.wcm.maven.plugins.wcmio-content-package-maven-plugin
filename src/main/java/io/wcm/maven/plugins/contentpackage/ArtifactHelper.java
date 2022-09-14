@@ -23,24 +23,28 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.repository.RepositorySystem;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.ArtifactType;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
+import org.eclipse.aether.resolution.ArtifactResult;
 
 class ArtifactHelper {
 
-  private final RepositorySystem repository;
-  private final ArtifactRepository localRepository;
-  private final List<ArtifactRepository> remoteRepositories;
+  private final RepositorySystem repoSystem;
+  private final RepositorySystemSession repoSession;
+  private final List<RemoteRepository> repositories;
 
-  ArtifactHelper(RepositorySystem repository, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories) {
-    this.repository = repository;
-    this.localRepository = localRepository;
-    this.remoteRepositories = remoteRepositories;
+  ArtifactHelper(RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository> repositories) {
+    this.repoSystem = repoSystem;
+    this.repoSession = repoSession;
+    this.repositories = repositories;
   }
 
   @SuppressWarnings("PMD.UseObjectForClearerAPI")
@@ -62,16 +66,15 @@ class ArtifactHelper {
     }
 
     // resolve artifact
-    ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+    ArtifactRequest request = new ArtifactRequest();
     request.setArtifact(artifactObject);
-    request.setLocalRepository(localRepository);
-    request.setRemoteRepositories(remoteRepositories);
-    ArtifactResolutionResult result = repository.resolve(request);
-    if (result.isSuccess()) {
-      return artifactObject.getFile();
+    request.setRepositories(repositories);
+    try {
+      ArtifactResult result = repoSystem.resolveArtifact(repoSession, request);
+      return result.getArtifact().getFile();
     }
-    else {
-      throw new MojoExecutionException("Unable to download artifact: " + artifactObject.toString());
+    catch (ArtifactResolutionException ex) {
+      throw new MojoExecutionException("Unable to download artifact: " + artifactObject.toString(), ex);
     }
   }
 
@@ -118,12 +121,27 @@ class ArtifactHelper {
     return createArtifact(artifactId, groupId, version, packaging, classifier);
   }
 
-  private Artifact createArtifact(final String artifactId, final String groupId, final String version, final String packaging, String classifier) {
-    if (StringUtils.isEmpty(classifier)) {
-      return repository.createArtifact(groupId, artifactId, version, packaging);
+  private Artifact createArtifact(final String artifactId, final String groupId, final String version,
+      final String type, String classifier) throws MojoFailureException {
+    String artifactTypeString = StringUtils.defaultString(type, "jar");
+    String artifactExtension = artifactTypeString;
+
+    ArtifactType artifactType = repoSession.getArtifactTypeRegistry().get(artifactExtension);
+    if (artifactType != null) {
+      artifactExtension = artifactType.getExtension();
     }
 
-    return repository.createArtifactWithClassifier(groupId, artifactId, version, packaging, classifier);
+    if (StringUtils.isBlank(groupId) || StringUtils.isBlank(artifactId) || StringUtils.isBlank(version)) {
+      throw new MojoFailureException("Invalid Maven artifact reference: "
+          + "artifactId=" + artifactId + ", "
+          + "groupId=" + groupId + ", "
+          + "version=" + version + ", "
+          + "extension=" + artifactExtension + ", "
+          + "classifier=" + classifier + ","
+          + "type=" + artifactType);
+    }
+
+    return new DefaultArtifact(groupId, artifactId, classifier, artifactExtension, version, artifactType);
   }
 
 }
