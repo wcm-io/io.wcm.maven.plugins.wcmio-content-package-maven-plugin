@@ -23,6 +23,18 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.1.6" date="2022-09-30">
+      <action type="update" dev="sseifert">
+        Content Unpacker: Allow to set replication activation information for "dam:Asset" nodes.
+      </action>
+      <action type="update" dev="sseifert">
+        Switch to Eclipse Aether API.
+      </action>
+      <action type="update" dev="sseifert">
+        Switch minimum Maven version to 3.3.9.
+      </action>
+    </release>
+
     <release version="2.1.4" date="2022-08-15">
       <action type="update" dev="sseifert">
         Check bundle status before package manager install status as the latter may report errors if certain bundles are restarted.
