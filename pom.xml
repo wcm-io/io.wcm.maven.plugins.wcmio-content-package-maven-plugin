@@ -47,7 +47,7 @@
 
   <properties>
     <site.url.module.prefix>tooling/maven/plugins/wcmio-content-package-maven-plugin</site.url.module.prefix>
-    <maven.version>3.3.9</maven.version>
+    <maven.version>3.8.6</maven.version>
 
     <!-- Enable reproducible builds -->
     <project.build.outputTimestamp>2022-09-30T08:03:56Z</project.build.outputTimestamp>
