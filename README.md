@@ -7,7 +7,7 @@
 Upload and download content packages.
 
 Documentation: https://wcm.io/tooling/maven/plugins/wcmio-content-package-maven-plugin/<br/>
-Issues: https://wcm-io.atlassian.net/browse/WTOOL<br/>
+Issues: https://github.com/wcm-io/io.wcm.maven.plugins.wcmio-content-package-maven-plugin/issues<br/>
 Wiki: https://wcm-io.atlassian.net/wiki/<br/>
 Continuous Integration: https://github.com/wcm-io/io.wcm.maven.plugins.wcmio-content-package-maven-plugin/actions<br/>
 Commercial support: https://wcm.io/commercial-support.html
