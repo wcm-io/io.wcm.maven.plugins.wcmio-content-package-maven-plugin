@@ -98,7 +98,7 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
   /**
    * OAuth 2 access token to authenticate against the remote CRX system (Felix console).
    * If this is configured, username and password are ignored.
-   * Defaults to value from <code>authenticationBearerToken</code>.
+   * Defaults to value from <code>oauth2AccessToken</code>.
    */
   @Parameter(property = "console.consoleOauth2AccessToken")
   private String consoleOauth2AccessToken;
