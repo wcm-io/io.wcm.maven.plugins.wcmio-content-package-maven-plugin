@@ -160,7 +160,7 @@ If you want to use the plugin with a Sling instance running the [Composum Browse
   <groupId>io.wcm.maven.plugins</groupId>
   <artifactId>wcmio-content-package-maven-plugin</artifactId>
   <configuration>
-    <serviceURL>http://localhost:8080/bin/cpm</serviceURL>
+    <serviceURL>http://localhost:8080/bin/cpm/</serviceURL>
   </configuration>
 </plugin>
 ```
