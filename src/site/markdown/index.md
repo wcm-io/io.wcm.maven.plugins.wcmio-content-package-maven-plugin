@@ -65,7 +65,7 @@ Sources: https://github.com/wcm-io/io.wcm.maven.plugins.wcmio-content-package-ma
 
 [usage]: usage.html
 [plugindocs]: plugin-info.html
-[changelog]: changes-report.html
+[changelog]: changes.html
 [jackrabbit-filevault-package-maven-plugin]: http://jackrabbit.apache.org/filevault-package-maven-plugin/
 [package-migration-guide]: https://wcm-io.atlassian.net/wiki/x/GYB1BQ
 [composum]: https://github.com/ist-dresden/composum
