@@ -189,7 +189,6 @@
               <goal>install</goal>
             </goals>
           </execution>
-          <!--  Download not support for Composum yet
           <execution>
             <id>download</id>
             <phase>integration-test</phase>
@@ -201,7 +200,6 @@
               <unpack>true</unpack>
             </configuration>
           </execution>
-          -->
         </executions>
         <configuration>
           <serviceURL>http://localhost:${http.port}/bin/cpm/</serviceURL>
