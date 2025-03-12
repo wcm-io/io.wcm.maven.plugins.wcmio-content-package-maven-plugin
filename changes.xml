@@ -19,11 +19,21 @@
   #L%
   -->
 
-<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/changes/1.0.0"
-    xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
+<document xmlns="http://maven.apache.org/changes/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/changes/2.0.0 https://maven.apache.org/xsd/changes-2.0.0.xsd">
   <body>
 
-    <release version="2.1.8" date="not released">
+    <release version="2.2.0" date="not released">
+      <action type="add" dev="dtschentscher">
+        Add package download support for Composum.
+      </action>
+      <action type="update" dev="sseifert">
+        Content Unpacker: Use FileVault DocViewFormat class to format downloaded DocView files instead of our own formatting implementation.
+      </action>
+      <action type="update" dev="sseifert">
+        Content Unpacker: When markReplicationActivated is activated, add missing jcr:content nodes for replication elements that need to be marked as activated.
+      </action>
       <action type="update" dev="sseifert">
         Switch to Java 11 as minimum version.
       </action>

@@ -115,6 +115,7 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
   /**
    * Sets a fixed date to be used for the "lastReplicated" property when setting replication status to "activated".
    * If not set the current date is used.
+   *
    * <p>
    * Use ISO8601 format. Example: <code>2020-01-01T00:00:00.000+02:00</code>.
    * </p>
@@ -140,6 +141,7 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
    * Path of the content package to download. The path is detected automatically when
    * <code>uploadPackageDefinition</code> is set to true (which is default). If set to false, the path
    * of the content package needs to be specified explicitly.
+   *
    * <p>
    * Example path: <code>/etc/packages/mygroup/mypackage-1.0.0-SNAPSHOT.zip</code>
    * </p>
