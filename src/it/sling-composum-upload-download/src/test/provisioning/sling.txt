@@ -1,8 +1,0 @@
-# must be the same feature name as the feature defined in slingstart to allow merging
-[feature name=sling]
-
-[artifacts]
-    org.apache.sling/org.apache.sling.starter/11/slingstart
-
-    # Additional test bundles
-    org.apache.sling/org.apache.sling.junit.core
