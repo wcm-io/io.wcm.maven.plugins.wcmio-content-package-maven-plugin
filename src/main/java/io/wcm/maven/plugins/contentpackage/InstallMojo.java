@@ -23,10 +23,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -162,7 +163,7 @@ public final class InstallMojo extends AbstractContentPackageMojo {
   @Parameter
   private PackageFile[] packageFiles;
 
-  @Component
+  @Inject
   private RepositorySystem repoSystem;
   @Parameter(defaultValue = "${repositorySystemSession}", readonly = true, required = true)
   private RepositorySystemSession repoSession;

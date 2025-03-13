@@ -25,11 +25,12 @@ import static io.wcm.tooling.commons.packmgr.install.VendorInstallerFactory.CRX_
 import java.io.File;
 import java.util.Arrays;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
 
@@ -223,17 +224,27 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
   @Parameter(property = "session", defaultValue = "${session}", readonly = true)
   private MavenSession session;
 
-  @Component(role = SettingsDecrypter.class)
+  @Inject
   private SettingsDecrypter decrypter;
 
+  /**
+   * @return Package file
+   */
   protected final File getPackageFile() {
     return this.packageFile;
   }
 
+  /**
+   * @return Skip
+   */
   protected final boolean isSkip() {
     return this.skip;
   }
 
+  /**
+   * @return Package manager properties
+   * @throws MojoExecutionException If configuration is invalid
+   */
   protected PackageManagerProperties getPackageManagerProperties() throws MojoExecutionException {
     PackageManagerProperties props = new PackageManagerProperties();
 
