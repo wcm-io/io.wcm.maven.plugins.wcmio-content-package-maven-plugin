@@ -40,7 +40,7 @@
 
     <!-- start with -DkeepITServerRunning=true to allow to rerun ITs or inspect the server after the ITs have been executed there -->
     <keepITServerRunning>false</keepITServerRunning>
-    <starter.min.bundles.count>126</starter.min.bundles.count>
+    <starter.min.bundles.count>200</starter.min.bundles.count>
   </properties>
 
   <dependencies>
