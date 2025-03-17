@@ -23,16 +23,16 @@ import static io.wcm.tooling.commons.packmgr.install.VendorInstallerFactory.COMP
 import static io.wcm.tooling.commons.packmgr.install.VendorInstallerFactory.CRX_URL;
 
 import java.io.File;
+import java.util.Arrays;
+
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
-
-import com.google.common.collect.ImmutableList;
 
 import io.wcm.tooling.commons.packmgr.PackageManagerProperties;
 import io.wcm.tooling.commons.packmgr.install.VendorInstallerFactory;
@@ -51,9 +51,8 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
   private File packageFile;
 
   /**
-   * <p>
    * The URL of the HTTP service API of the CRX package manager.
-   * </p>
+   *
    * <p>
    * See <a href=
    * "https://experienceleague.adobe.com/docs/experience-manager-65/administering/operations/curl.html?lang=en#package-management"
@@ -99,7 +98,7 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
   /**
    * OAuth 2 access token to authenticate against the remote CRX system (Felix console).
    * If this is configured, username and password are ignored.
-   * Defaults to value from <code>authenticationBearerToken</code>.
+   * Defaults to value from <code>oauth2AccessToken</code>.
    */
   @Parameter(property = "console.consoleOauth2AccessToken")
   private String consoleOauth2AccessToken;
@@ -123,17 +122,18 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
   private int retryDelay;
 
   /**
-   * <p>
    * Bundle status JSON URL. If an URL is configured the activation status of all bundles in the system is checked
    * before it is tried to upload and install a new package and after each upload.
-   * </p>
+   *
    * <p>
    * If not all bundles are activated the upload is delayed up to {@link #bundleStatusWaitLimit} seconds,
    * every 5 seconds the activation status is checked anew.
    * </p>
+   *
    * <p>
    * Expected is an URL like: http://localhost:4502/system/console/bundles/.json
    * </p>
+   *
    * <p>
    * If the URL is not set it is derived from serviceURL. If set to "-" the status check is disabled.
    * </p>
@@ -149,17 +149,18 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
   private int bundleStatusWaitLimit;
 
   /**
-   * <p>
    * Package Manager install status JSON URL. If an URL is configured the installation status of packages and
    * embedded packages is checked before it is tried to upload and install a new package and after each upload.
-   * </p>
+   *
    * <p>
    * If not all packages are installed the upload is delayed up to {@link #packageManagerInstallStatusWaitLimit}
    * seconds, every 5 seconds the installation status is checked anew.
    * </p>
+   *
    * <p>
    * Expected is an URL like: http://localhost:4502/crx/packmgr/installstatus.jsp
    * </p>
+   *
    * <p>
    * If the URL is not set it is derived from serviceURL. If set to "-" the status check is disabled.
    * </p>
@@ -223,17 +224,27 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
   @Parameter(property = "session", defaultValue = "${session}", readonly = true)
   private MavenSession session;
 
-  @Component(role = SettingsDecrypter.class)
+  @Inject
   private SettingsDecrypter decrypter;
 
+  /**
+   * @return Package file
+   */
   protected final File getPackageFile() {
     return this.packageFile;
   }
 
+  /**
+   * @return Skip
+   */
   protected final boolean isSkip() {
     return this.skip;
   }
 
+  /**
+   * @return Package manager properties
+   * @throws MojoExecutionException If configuration is invalid
+   */
   protected PackageManagerProperties getPackageManagerProperties() throws MojoExecutionException {
     PackageManagerProperties props = new PackageManagerProperties();
 
@@ -248,8 +259,8 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
     props.setRetryDelaySec(this.retryDelay);
     props.setBundleStatusUrl(buildBundleStatusUrl());
     props.setBundleStatusWaitLimitSec(this.bundleStatusWaitLimit);
-    props.setBundleStatusBlacklistBundleNames(ImmutableList.copyOf(this.bundleStatusBlacklistBundleNames));
-    props.setBundleStatusWhitelistBundleNames(ImmutableList.copyOf(this.bundleStatusWhitelistBundleNames));
+    props.setBundleStatusBlacklistBundleNames(Arrays.asList(this.bundleStatusBlacklistBundleNames));
+    props.setBundleStatusWhitelistBundleNames(Arrays.asList(this.bundleStatusWhitelistBundleNames));
     props.setPackageManagerInstallStatusURL(buildPackageManagerInstallStatusUrl());
     props.setPackageManagerInstallStatusWaitLimitSec(this.packageManagerInstallStatusWaitLimit);
     props.setRelaxedSSLCheck(this.relaxedSSLCheck);

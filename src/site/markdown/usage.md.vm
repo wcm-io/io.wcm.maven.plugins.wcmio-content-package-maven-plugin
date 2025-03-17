@@ -151,5 +151,26 @@ To enable complete HTTP wire logging (produces lots of logging data!), use:
 ```
 
 
+$symbol_pound$symbol_pound$symbol_pound Composum Browser
+
+If you want to use the plugin with a Sling instance running the [Composum Browser][composum-nodes], use a different service URL:
+
+```xml
+<plugin>
+  <groupId>io.wcm.maven.plugins</groupId>
+  <artifactId>wcmio-content-package-maven-plugin</artifactId>
+  <configuration>
+    <serviceURL>http://localhost:8080/bin/cpm/</serviceURL>
+  </configuration>
+</plugin>
+```
+
+If you also want to be able to download packages from Composum, add an configuration parameter like:
+```xml
+<contentPackagePath>/${contentPackage.group}/${contentPackage.name}-${project.version}.zip</contentPackagePath>
+```
+
+
 [plugindocs]: plugin-info.html
 [aem-global-parent]: https://wcm.io/tooling/maven/aem-global-parent.html
+[composum-nodes]: https://www.composum.com/home/nodes.html

@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm.maven</groupId>
     <artifactId>io.wcm.maven.global-parent</artifactId>
-    <version>40</version>
+    <version>61</version>
     <relativePath/>
   </parent>
 
@@ -35,45 +35,13 @@
   
   <properties>
     <!-- Java version -->
-    <java.version>1.8</java.version>
-    <build.compiler.release>8</build.compiler.release>
+    <java.version>11</java.version>
 
     <!-- start with -DkeepITServerRunning=true to allow to rerun ITs or inspect the server after the ITs have been executed there -->
     <keepITServerRunning>false</keepITServerRunning>
+    <starter.min.bundles.count>200</starter.min.bundles.count>
+    <it.startTimeoutSeconds>60</it.startTimeoutSeconds>
   </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.framework</artifactId>
-      <version>1.8.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.junit.core</artifactId>
-      <version>1.0.28</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.rules</artifactId>
-      <version>1.0.8</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.junit.teleporter</artifactId>
-      <version>1.0.20</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
   <build>
     <plugins>
@@ -99,82 +67,81 @@
         </executions>
       </plugin>
 
+      <!-- launch the Sling instances to test -->
       <plugin>
-        <!-- the Sling instance is provisioned from the model in src/main/provisioning/model.txt -->
         <groupId>org.apache.sling</groupId>
-        <artifactId>slingstart-maven-plugin</artifactId>
-        <version>1.9.12</version>
-        <extensions>true</extensions>
+        <artifactId>feature-launcher-maven-plugin</artifactId>
+        <version>0.1.6</version>
+        <configuration>
+          <launches>
+            <launch>
+              <id>sling-starter-oak-tar</id>
+              <feature>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.starter</artifactId>
+                <version>13</version>
+                <classifier>oak_tar</classifier>
+                <type>slingosgifeature</type>
+              </feature>
+              <launcherArguments>
+                <frameworkProperties>
+                  <org.osgi.service.http.port>${http.port}</org.osgi.service.http.port>
+                  <org.apache.felix.http.jetty.responseBufferSize>5000000</org.apache.felix.http.jetty.responseBufferSize>
+                </frameworkProperties>
+              </launcherArguments>
+              <startTimeoutSeconds>${it.startTimeoutSeconds}</startTimeoutSeconds>
+            </launch>
+          </launches>
+        </configuration>
         <executions>
           <execution>
-            <id>prepare-launchpad-package</id>
-            <goals>
-              <goal>prepare-package</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-          </execution>
-          <execution>
-            <id>build-launchpad-package</id>
-            <goals>
-              <goal>package</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <attachArtifact>false</attachArtifact>
-            </configuration>
-          </execution>
-          <execution>
-            <id>start-container-before-IT</id>
             <goals>
               <goal>start</goal>
-            </goals>
-            <configuration>
-            </configuration>
-          </execution>
-          <execution>
-            <id>stop-container-after-IT</id>
-            <goals>
               <goal>stop</goal>
             </goals>
-            <configuration>
-              <shouldBlockUntilKeyIsPressed>${keepITServerRunning}</shouldBlockUntilKeyIsPressed>
-            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <servers>
-            <!-- this configuration applies to both 'start' and 'stop' -->
-            <server>
-              <id>singleinstance</id>
-              <port>${http.port}</port>
-              <stdOutFile>sling/logs/stdout.log</stdOutFile>
-            </server>
-          </servers>
-          <!-- this configuration only applies to 'prepare-package' and 'package' -->
-          <disableExtendingMavenClasspath>true</disableExtendingMavenClasspath>
-          <usePomDependencies>true</usePomDependencies>
-        </configuration>
       </plugin>
 
+      <!-- run the ITs -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <executions>
-          <execution>
-            <configuration>
-              <systemProperties>
-                <http.port>${http.port}</http.port>
-              </systemProperties>
-            </configuration>
-          </execution>
-        </executions>
         <configuration>
+          <dependenciesToScan>
+            <dependency>org.apache.sling:org.apache.sling.launchpad.integration-tests</dependency>
+          </dependenciesToScan>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*IT.java</include>
+          </includes>
+          <excludes>
+            <exclude>${failsafe.exclude}</exclude>
+            <!-- Don't run provisioning model ITs in the feature model context -->
+            <exclude>org/apache/sling/launchpad/webapp/integrationtest/provisioning/**.java</exclude>
+          </excludes>
           <systemPropertyVariables>
-            <launchpad.http.server.url>http://localhost:${http.port}</launchpad.http.server.url>
-            <server.ready.timeout.seconds>120</server.ready.timeout.seconds>
-            <server.ready.path.1>/starter/index.html:Getting Started</server.ready.path.1>
+            <launchpad.http.server.url>http://localhost:${http.port}/</launchpad.http.server.url>
+            <starter.http.test.ports>false:${http.port}</starter.http.test.ports>
+            <starter.min.bundles.count>${starter.min.bundles.count}</starter.min.bundles.count>
+            <!-- Comma-separated list of paths to check for 200 status (added for SLING-10402) -->
+            <starter.check.paths>
+              /slingshot/users/slingshot1/travel/home/images/home.jpg,
+              /slingshot/resources/images/background.jpg,
+              /slingshot/users/slingshot2/places/landing/images/landing.jpg,
+              /starter.html,
+              /bin/browser.html,
+              /system/console/bundles,
+            </starter.check.paths>
           </systemPropertyVariables>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -189,7 +156,6 @@
               <goal>install</goal>
             </goals>
           </execution>
-          <!--  Download not support for Composum yet
           <execution>
             <id>download</id>
             <phase>integration-test</phase>
@@ -201,7 +167,6 @@
               <unpack>true</unpack>
             </configuration>
           </execution>
-          -->
         </executions>
         <configuration>
           <serviceURL>http://localhost:${http.port}/bin/cpm/</serviceURL>
