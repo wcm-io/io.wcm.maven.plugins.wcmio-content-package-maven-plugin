@@ -24,6 +24,13 @@
     xsi:schemaLocation="http://maven.apache.org/changes/2.0.0 https://maven.apache.org/xsd/changes-2.0.0.xsd">
   <body>
 
+    <release version="2.3.0" date="not released">
+      <action type="add" dev="sseifert" issue="29">
+        CRX Package Manager Upload: Add system ready check after deployment (enabled by default, can be disabled).
+        It only has an effect when deploying to AEMaaCS instances. Default responses from AEM 6.5 and 6.6 instances are accepted as valid.
+      </action>
+    </release>
+
     <release version="2.2.0" date="2025-03-17">
       <action type="add" dev="dtschentscher">
         Add package download support for Composum.

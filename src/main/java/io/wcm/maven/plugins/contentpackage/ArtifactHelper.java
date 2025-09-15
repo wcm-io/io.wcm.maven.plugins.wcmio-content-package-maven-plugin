@@ -21,6 +21,7 @@ package io.wcm.maven.plugins.contentpackage;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -123,7 +124,7 @@ class ArtifactHelper {
 
   private Artifact createArtifact(final String artifactId, final String groupId, final String version,
       final String type, String classifier) throws MojoFailureException {
-    String artifactTypeString = StringUtils.defaultString(type, "jar");
+    String artifactTypeString = Objects.toString(type, "jar");
     String artifactExtension = artifactTypeString;
 
     ArtifactType artifactType = repoSession.getArtifactTypeRegistry().get(artifactExtension);
