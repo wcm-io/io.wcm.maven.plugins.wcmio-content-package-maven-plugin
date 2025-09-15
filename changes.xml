@@ -25,7 +25,7 @@
   <body>
 
     <release version="2.3.0" date="not released">
-      <action type="add" dev="sseifert">
+      <action type="add" dev="sseifert" issue="29">
         CRX Package Manager Upload: Add system ready check after deployment (enabled by default, can be disabled).
         It only has an effect when deploying to AEMaaCS instances. Default responses from AEM 6.5 and 6.6 instances are accepted as valid.
       </action>
