@@ -25,7 +25,7 @@
   <body>
 
     <release version="2.4.2" date="not released">
-      <action type="update" dev="sseifert">
+      <action type="update" dev="sseifert" issue="41">
         CRX Package Manager Upload: Switch default URL for system ready check to /systemready.json
       </action>
     </release>
