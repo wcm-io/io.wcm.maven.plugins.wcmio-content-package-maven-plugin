@@ -201,7 +201,7 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
    * after installing finishing the upload. This works only for AEMaaCS SDK instances.
    *
    * <p>
-   * Expected is an URL like: http://localhost:4502/systemready
+   * Expected is an URL like: http://localhost:4502/systemready.json
    * </p>
    *
    * <p>
@@ -332,7 +332,7 @@ abstract class AbstractContentPackageMojo extends AbstractMojo {
     }
     // if not set use hostname from serviceURL and add default path to bundle status
     String baseUrl = VendorInstallerFactory.getBaseUrl(buildPackageManagerUrl());
-    return baseUrl + "/systemready";
+    return baseUrl + "/systemready.json";
   }
 
   private String buildPackageManagerInstallStatusUrl() throws MojoExecutionException {
