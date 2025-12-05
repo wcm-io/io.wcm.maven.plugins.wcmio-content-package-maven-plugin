@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm.maven</groupId>
     <artifactId>io.wcm.maven.global-parent</artifactId>
-    <version>70</version>
+    <version>74</version>
     <relativePath/>
   </parent>
 
@@ -35,7 +35,7 @@
   
   <properties>
     <!-- Java version -->
-    <java.version>11</java.version>
+    <java.version>17</java.version>
 
     <!-- start with -DkeepITServerRunning=true to allow to rerun ITs or inspect the server after the ITs have been executed there -->
     <keepITServerRunning>false</keepITServerRunning>
@@ -71,7 +71,7 @@
       <plugin>
         <groupId>org.apache.sling</groupId>
         <artifactId>feature-launcher-maven-plugin</artifactId>
-        <version>0.1.8</version>
+        <version>1.0.0</version>
         <configuration>
           <launches>
             <launch>
@@ -79,7 +79,7 @@
               <feature>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.starter</artifactId>
-                <version>13</version>
+                <version>14-SNAPSHOT</version>
                 <classifier>oak_tar</classifier>
                 <type>slingosgifeature</type>
               </feature>
