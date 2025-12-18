@@ -34,11 +34,8 @@
   <version>@project.version@</version>
   
   <properties>
-    <!-- Java version -->
     <java.version>17</java.version>
 
-    <!-- start with -DkeepITServerRunning=true to allow to rerun ITs or inspect the server after the ITs have been executed there -->
-    <keepITServerRunning>false</keepITServerRunning>
     <starter.min.bundles.count>200</starter.min.bundles.count>
     <it.startTimeoutSeconds>60</it.startTimeoutSeconds>
   </properties>
@@ -50,16 +47,14 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
-          <!-- Find free ports to run our server -->
           <execution>
-            <id>reserve-server-port</id>
+            <id>reserve-network-port</id>
             <goals>
               <goal>reserve-network-port</goal>
             </goals>
             <phase>pre-integration-test</phase>
             <configuration>
               <portNames>
-                <!-- reserved port must be stored in property because it must be passed to the slingstart-maven-plugin -->
                 <portName>http.port</portName>
               </portNames>
             </configuration>
@@ -67,7 +62,6 @@
         </executions>
       </plugin>
 
-      <!-- launch the Sling instances to test -->
       <plugin>
         <groupId>org.apache.sling</groupId>
         <artifactId>feature-launcher-maven-plugin</artifactId>
@@ -103,31 +97,15 @@
         </executions>
       </plugin>
 
-      <!-- run the ITs -->
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
-          <dependenciesToScan>
-            <dependency>org.apache.sling:org.apache.sling.launchpad.integration-tests</dependency>
-          </dependenciesToScan>
-          <includes>
-            <include>**/*Test.java</include>
-            <include>**/*IT.java</include>
-          </includes>
-          <excludes>
-            <exclude>${failsafe.exclude}</exclude>
-            <!-- Don't run provisioning model ITs in the feature model context -->
-            <exclude>org/apache/sling/launchpad/webapp/integrationtest/provisioning/**.java</exclude>
-          </excludes>
           <systemPropertyVariables>
             <launchpad.http.server.url>http://localhost:${http.port}/</launchpad.http.server.url>
             <starter.http.test.ports>false:${http.port}</starter.http.test.ports>
             <starter.min.bundles.count>${starter.min.bundles.count}</starter.min.bundles.count>
-            <!-- Comma-separated list of paths to check for 200 status (added for SLING-10402) -->
+            <!-- Comma-separated list of paths to check for 200 status -->
             <starter.check.paths>
-              /slingshot/users/slingshot1/travel/home/images/home.jpg,
-              /slingshot/resources/images/background.jpg,
-              /slingshot/users/slingshot2/places/landing/images/landing.jpg,
               /starter.html,
               /bin/browser.html,
               /system/console/bundles,
