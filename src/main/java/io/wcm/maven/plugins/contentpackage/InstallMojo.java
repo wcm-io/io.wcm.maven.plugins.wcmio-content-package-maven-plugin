@@ -41,7 +41,8 @@ import io.wcm.tooling.commons.packmgr.install.PackageInstaller;
 /**
  * Install a Content Package on a remote CRX or AEM system.
  */
-@Mojo(name = "install", defaultPhase = LifecyclePhase.INSTALL, requiresProject = false, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true)
+@Mojo(name = "install", defaultPhase = LifecyclePhase.INSTALL, requiresProject = false, requiresDependencyResolution = ResolutionScope.RUNTIME,
+    threadSafe = true)
 public final class InstallMojo extends AbstractContentPackageMojo {
 
   /**
