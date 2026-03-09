@@ -73,7 +73,7 @@
               <feature>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.starter</artifactId>
-                <version>14-SNAPSHOT</version>
+                <version>14</version>
                 <classifier>oak_tar</classifier>
                 <type>slingosgifeature</type>
               </feature>
