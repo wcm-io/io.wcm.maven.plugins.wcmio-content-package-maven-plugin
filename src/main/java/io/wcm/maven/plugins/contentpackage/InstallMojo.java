@@ -43,6 +43,7 @@ import io.wcm.tooling.commons.packmgr.install.PackageInstaller;
  */
 @Mojo(name = "install", defaultPhase = LifecyclePhase.INSTALL, requiresProject = false, requiresDependencyResolution = ResolutionScope.RUNTIME,
     threadSafe = true)
+@SuppressWarnings("java:S6813") // allow field injection
 public final class InstallMojo extends AbstractContentPackageMojo {
 
   /**
@@ -172,6 +173,7 @@ public final class InstallMojo extends AbstractContentPackageMojo {
   private List<RemoteRepository> repositories;
 
   @Override
+  @SuppressWarnings("java:S3776") // accept complexity
   public void execute() throws MojoExecutionException, MojoFailureException {
     if (isSkip()) {
       return;
