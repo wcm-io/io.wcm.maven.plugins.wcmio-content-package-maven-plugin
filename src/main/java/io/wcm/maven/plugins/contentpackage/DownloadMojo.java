@@ -247,6 +247,7 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
         Thread.sleep(10);
       }
       catch (InterruptedException ex) {
+        Thread.currentThread().interrupt();
         throw new MojoExecutionException(ex.getMessage(), ex);
       }
       return deleteDirectoryWithRetries(directory, retryCount + 1);
