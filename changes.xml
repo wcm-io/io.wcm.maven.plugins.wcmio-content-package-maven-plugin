@@ -26,6 +26,9 @@
 
     <release version="2.4.4" date="not released">
       <action type="update" dev="sseifert">
+        Improve reliability and security of File/Zip handling.
+      </action>
+      <action type="update" dev="sseifert">
         Switch to Java 21.
       </action>
     </release>
