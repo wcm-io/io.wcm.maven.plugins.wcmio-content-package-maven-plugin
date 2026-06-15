@@ -24,7 +24,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/2.0.0 https://maven.apache.org/xsd/changes-2.0.0.xsd">
   <body>
 
-    <release version="2.4.4" date="not released">
+    <release version="2.5.0" date="2026-06-15">
       <action type="update" dev="sseifert">
         Improve reliability and security of File/Zip handling.
       </action>
