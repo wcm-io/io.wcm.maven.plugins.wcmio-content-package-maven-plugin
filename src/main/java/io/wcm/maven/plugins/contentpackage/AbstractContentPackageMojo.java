@@ -41,6 +41,7 @@ import io.wcm.tooling.commons.packmgr.install.VendorInstallerFactory.Service;
 /**
  * Common functionality for all mojos.
  */
+@SuppressWarnings("java:S6813") // allow field injection
 abstract class AbstractContentPackageMojo extends AbstractMojo {
 
   /**

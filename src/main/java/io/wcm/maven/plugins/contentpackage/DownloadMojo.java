@@ -39,7 +39,8 @@ import io.wcm.tooling.commons.packmgr.unpack.ContentUnpackerProperties;
 /**
  * Builds and downloads a content package defined on a remote CRX or AEM system.
  */
-@Mojo(name = "download", defaultPhase = LifecyclePhase.INSTALL, requiresProject = false, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true)
+@Mojo(name = "download", defaultPhase = LifecyclePhase.INSTALL, requiresProject = false, requiresDependencyResolution = ResolutionScope.RUNTIME,
+    threadSafe = true)
 public final class DownloadMojo extends AbstractContentPackageMojo {
 
   /**
@@ -218,8 +219,8 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
       for (String directory : unpackDeleteDirectories) {
         File directoryFile = FileUtils.getFile(this.unpackDirectory, directory);
         if (directoryFile.exists() && !deleteDirectoryWithRetries(directoryFile, 0)) {
-            throw new MojoExecutionException("Unable to delete existing content from "
-                + directoryFile.getAbsolutePath());
+          throw new MojoExecutionException("Unable to delete existing content from "
+              + directoryFile.getAbsolutePath());
         }
       }
     }
@@ -246,6 +247,7 @@ public final class DownloadMojo extends AbstractContentPackageMojo {
         Thread.sleep(10);
       }
       catch (InterruptedException ex) {
+        Thread.currentThread().interrupt();
         throw new MojoExecutionException(ex.getMessage(), ex);
       }
       return deleteDirectoryWithRetries(directory, retryCount + 1);
