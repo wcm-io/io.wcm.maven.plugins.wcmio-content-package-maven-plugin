@@ -30,7 +30,7 @@
 
   <groupId>io.wcm.maven.plugins</groupId>
   <artifactId>wcmio-content-package-maven-plugin</artifactId>
-  <version>2.5.0</version>
+  <version>2.5.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Content Package Maven Plugin</name>
@@ -53,7 +53,7 @@
     <maven.version>3.8.6</maven.version>
 
     <!-- Enable reproducible builds -->
-    <project.build.outputTimestamp>2026-06-15T17:58:55Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-06-15T18:00:09Z</project.build.outputTimestamp>
 
     <!-- Enable recording of coverage during execution of maven-invoker-plugin -->
     <jacoco.propertyName>invoker.mavenOpts</jacoco.propertyName>
