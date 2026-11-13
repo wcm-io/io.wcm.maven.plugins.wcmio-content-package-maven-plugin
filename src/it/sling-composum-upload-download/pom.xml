@@ -135,6 +135,29 @@
             </goals>
           </execution>
           <execution>
+            <id>install-packageFiles</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>install</goal>
+            </goals>
+            <configuration>
+              <!-- dependencyHandling is ignored by Composum, but ensures parameter mapping is executed -->
+              <dependencyHandling>REQUIRED</dependencyHandling>
+              <packageFiles>
+                <packageFile>
+                  <packageFile>content-package-1.0.zip</packageFile>
+                  <force>true</force>
+                  <recursive>false</recursive>
+                  <dependencyHandling>BEST_EFFORT</dependencyHandling>
+                  <delayAfterInstallSec>0</delayAfterInstallSec>
+                </packageFile>
+                <packageFile>
+                  <packageFile>content-package-1.0.zip</packageFile>
+                </packageFile>
+              </packageFiles>
+            </configuration>
+          </execution>
+          <execution>
             <id>download</id>
             <phase>integration-test</phase>
             <goals>
