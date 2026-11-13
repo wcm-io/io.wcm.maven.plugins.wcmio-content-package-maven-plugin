@@ -21,6 +21,8 @@ package io.wcm.maven.plugins.contentpackage;
 
 import java.io.File;
 
+import org.apache.jackrabbit.vault.packaging.DependencyHandling;
+
 /**
  * References a content package file for uploading.
  */
@@ -80,6 +82,11 @@ public final class PackageFile {
   private Boolean recursive;
 
   /**
+   * Defines how package dependencies are handled on package installation.
+   */
+  private DependencyHandling dependencyHandling;
+
+  /**
    * Delay further steps after package installation by this amount of seconds.
    */
   private Integer delayAfterInstallSec;
@@ -127,6 +134,10 @@ public final class PackageFile {
 
   Boolean getRecursive() {
     return this.recursive;
+  }
+
+  DependencyHandling getDependencyHandling() {
+    return this.dependencyHandling;
   }
 
   Integer getDelayAfterInstallSec() {
