@@ -142,11 +142,12 @@
             </goals>
             <configuration>
               <!-- dependencyHandling is ignored by Composum, but ensures parameter mapping is executed -->
+              <force>true</force>
               <dependencyHandling>REQUIRED</dependencyHandling>
               <packageFiles>
                 <packageFile>
                   <packageFile>content-package-1.0.zip</packageFile>
-                  <force>true</force>
+                  <install>true</install>
                   <recursive>false</recursive>
                   <dependencyHandling>BEST_EFFORT</dependencyHandling>
                   <delayAfterInstallSec>0</delayAfterInstallSec>
