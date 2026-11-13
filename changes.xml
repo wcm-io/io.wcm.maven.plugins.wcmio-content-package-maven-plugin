@@ -24,7 +24,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/2.0.0 https://maven.apache.org/xsd/changes-2.0.0.xsd">
   <body>
 
-    <release version="2.5.2" date="not released">
+    <release version="2.6.0" date="not released">
       <action type="add" dev="sseifert" issue="64">
         Install goal: Add parameter dependencyHandling to define how package dependencies are handled on package installation.
       </action>
