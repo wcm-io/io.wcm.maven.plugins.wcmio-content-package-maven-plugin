@@ -26,6 +26,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.vault.packaging.DependencyHandling;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -68,6 +69,15 @@ public final class InstallMojo extends AbstractContentPackageMojo {
    */
   @Parameter(property = "vault.recursive", defaultValue = "true")
   private boolean recursive;
+
+  /**
+   * Defines how package dependencies are handled on package installation.
+   * Possible values: <code>IGNORE</code>, <code>BEST_EFFORT</code>, <code>REQUIRED</code>, <code>STRICT</code>.
+   * If not set, the package manager's default is used (<code>REQUIRED</code>).
+   * Only supported for CRX package manager.
+   */
+  @Parameter(property = "vault.dependencyHandling")
+  private DependencyHandling dependencyHandling;
 
   /**
    * The groupId of the artifact to install.
@@ -157,6 +167,7 @@ public final class InstallMojo extends AbstractContentPackageMojo {
    * <li><code>force</code>: Force upload and install of content package. If set to false a package is not uploaded or
    * installed if it was already uploaded before.</li>
    * <li><code>recursive</code>: If set to true nested packages get installed as well.</li>
+   * <li><code>dependencyHandling</code>: Defines how package dependencies are handled on package installation.</li>
    * <li><code>delayAfterInstallSec</code>: Delay further steps after package installation by this amount of
    * seconds.</li>
    * <li><code>httpSocketTimeoutSec</code>: HTTP socket timeout (in seconds) for this package.</li>
@@ -255,6 +266,12 @@ public final class InstallMojo extends AbstractContentPackageMojo {
     else {
       output.setRecursive(this.recursive);
     }
+    if (ref.getDependencyHandling() != null) {
+      output.setDependencyHandling(ref.getDependencyHandling());
+    }
+    else {
+      output.setDependencyHandling(this.dependencyHandling);
+    }
     if (ref.getDelayAfterInstallSec() != null) {
       output.setDelayAfterInstallSec(ref.getDelayAfterInstallSec());
     }
@@ -276,6 +293,7 @@ public final class InstallMojo extends AbstractContentPackageMojo {
     output.setInstall(this.install);
     output.setForce(this.force);
     output.setRecursive(this.recursive);
+    output.setDependencyHandling(this.dependencyHandling);
     if (this.delayAfterInstallSec != null) {
       output.setDelayAfterInstallSec(this.delayAfterInstallSec);
     }
