@@ -30,6 +30,7 @@ Additional features of the `install` goal compared to the Adobe plugin:
 * `force` property - if set to false a package is not uploaded or installed if it was already
 uploaded before.
 * `recursive` property - if set to true nested packages get installed as well.
+* `dependencyHandling` property - defines how package dependencies are handled on package installation (`IGNORE`, `BEST_EFFORT`, `REQUIRED`, `STRICT`). If not set, the package manager's default `REQUIRED` is used.
 * `packageFiles` property - allows installing multiple package files referenced from local filesystem
 or from maven repository at once.
 * `bundleStatusURL` - allows to check for bundle activation status before installing a package to avoid failed package deployments if the previous packages contained OSGi bundles that need some time to get installed properly.
